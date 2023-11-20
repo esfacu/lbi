@@ -1,0 +1,41 @@
+{% extends 'landingpage/layout-static.html' %}
+{% block content %}
+{% load static %}
+
+<h1>Ubicaciones Ingresadas:</h1>
+
+{% if ubication %}
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>RACK Label</th>
+                {% comment %}
+                <!-- <th>Acciones</th> -->
+                {% endcomment %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for l in ubication %}
+                <tr>
+                    <td>{{ l.id }}</td>
+                    <td>{{ l.Number }}</td>
+                    <td><a href="#" class="btn btn-primary">Edit</a>  <a href="#" class="btn btn-danger">Delete Ubication</a></td>
+                    
+                    {% comment %}
+                    <!-- <td>
+                        <form class="card">
+                            <a href="{% url 'ubication_confirm_delete' pk=l.pk %}" class="btn btn-danger">Delete Ubication</a>
+                            <a href="{% url 'update_ubication' pk=l.pk %}" class="btn btn-primary">Edit</a>
+                        </form>
+                    </td> -->
+                    {% endcomment %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No hay ubicaciones disponibles.</p>
+{% endif %}
+
+{% endblock %}

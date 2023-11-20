@@ -16,8 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from .views import *
 
 urlpatterns = [
-    path('', include('location.urls')),
-    path('admin/', admin.site.urls),
+    path('ubication/', LBIListView.as_view(), name='ubication'),
+    path('', IndexView.as_view(), name='index'),
+    path('lbi/create/', LBICreateView.as_view(), name='lbi_create'),
 ]
