@@ -22,4 +22,8 @@ urlpatterns = [
     path('ubication/', LBIListView.as_view(), name='ubication'),
     path('', IndexView.as_view(), name='index'),
     path('lbi/create/', LBICreateView.as_view(), name='lbi_create'),
+    path('ubication/<int:pk>/update_ubication/', LBIUpdateView.as_view(), name='update_ubication'),
+    path('select_lbi/', select_lbi, name='select_lbi'),
+    path('location/', EanListView.as_view(), name='location'),
+    path('create_ean/', create_ean, name='create_ean'),
 ]

@@ -18,10 +18,12 @@
         <div class="card">
           <div class="card-body">
             <h2 class="card-title text-center">Add New RACK</h2>
-            <form method="post" class="mt-3">
+            <form method="post" class="mx-auto" style="max-width: 300px;">
               {% csrf_token %}
               {{ form.as_p }}
-              <button type="submit" class="btn btn-primary btn-block mt-4">Save RACK</button>
+                <div class="card">
+                  <button type="submit" class="btn btn-primary btn-sm btn-block mt-4">Save RACK</button>
+                </div>
             </form>
           </div>
         </div>

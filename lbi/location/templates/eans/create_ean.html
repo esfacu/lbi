@@ -1,0 +1,27 @@
+{% extends 'landingpage/layout-static.html' %}
+{% block content %}
+{% load static %}
+
+  <h1>Agregar EAN a LBI {{ selected_lbi }}</h1>
+  {% if messages %}
+  <div class="messages">
+    {% for message in messages %}
+      <div class="alert alert-success" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+<!-- Resto del contenido del formulario -->
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary btn-sm btn-block mt-4">Guardar EAN</button>
+    <button type="" class="btn btn-dark btn-sm btn-block mt-4" >
+      <a href="{% url 'select_lbi' %}" style="color: inherit; text-decoration: none; display: block; width: 100%;">Cambiar LBI
+      </a>
+    </button>
+  </form>
+{% endblock %}

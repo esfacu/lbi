@@ -4,26 +4,26 @@
 
 <h1>Ubicaciones Ingresadas:</h1>
 
-{% if ubication %}
+{% if eans %}
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th>ID</th>
+                <th>Ean Label</th>
                 <th>RACK Label</th>
-                <th>Options Label</th>
                 {% comment %}
                 <!-- <th>Acciones</th> -->
                 {% endcomment %}
             </tr>
         </thead>
         <tbody>
-            {% for l in ubication %}
+            {% for e in eans %}
                 <tr>
-                    <td>{{ l.id }}</td>
-                    <td>{{ l.Number }}</td>
+                    <td>{{ e.id }}</td>
+                    <td>{{ e.ean_code }}</td>
+                    <td>{{ e.lbi }}</td>
                     <td>
-                    <a href="{% url 'update_ubication' pk=l.pk %}" class="btn btn-primary">Edit</a>
-                    <a href="#" class="btn btn-danger">Delete Ubication</a>
+
                     </td>
                     {% comment %}
                     <!-- <td>

@@ -1,0 +1,16 @@
+{% extends 'landingpage/layout-static.html' %}
+{% block content %}
+{% load static %}
+<h1>FORM UPDATE UBICATION</h1>
+<br>
+<form method="post" class="mx-auto" style="max-width: 300px;">
+    <div class="form-group">
+        <label for="exampleInputEmail1">UBICATION Label: </label>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="card">
+            <button type="submit" class="btn btn-primary btn-sm btn-block mt-4">Save UBICATION</button>
+        </div>
+    </div>
+</form>
+{% endblock %}
