@@ -3,6 +3,11 @@
 {% load static %}
 
 <h1>Ubicaciones Ingresadas:</h1>
+<div class="ml-auto">
+    <h1>Ubicaciones Ingresadas:</h1>
+    <a href="{% url 'lbi_create' %}" class="btn btn-dark float-right">Agregar Racks</a>
+</div>
+<br>
 
 {% if ubication %}
     <table class="table table-bordered">
@@ -22,8 +27,9 @@
                     <td>{{ l.id }}</td>
                     <td>{{ l.Number }}</td>
                     <td>
-                    <a href="{% url 'update_ubication' pk=l.pk %}" class="btn btn-primary">Edit</a>
-                    <a href="#" class="btn btn-danger">Delete Ubication</a>
+                    <a href="{% url 'update_ubication' pk=l.pk %}" class="btn btn-primary">Edit Rack</a>
+                    <a href="{% url 'create_ean' %}" class="btn btn-dark">Add Eans</a>
+                    <a href="{% url 'eliminar_rack' pk=l.Number %}" class="btn btn-danger" onclick="return confirmarEliminar()">Delete Ubication</a>
                     </td>
                     {% comment %}
                     <!-- <td>
@@ -41,4 +47,17 @@
     <p>No hay ubicaciones disponibles.</p>
 {% endif %}
 
+<script>
+    function confirmarEliminar() {
+        // Muestra una ventana de confirmación
+        var confirmacion = confirm("¿Estás seguro de que deseas eliminar este rack?");
+        
+        // Si el usuario confirma, redirige a la URL de eliminación
+        if (confirmacion) {
+            return true;  // Continuar con la acción del enlace
+        } else {
+            return false;  // Cancelar la acción del enlace
+        }
+    }
+</script>
 {% endblock %}

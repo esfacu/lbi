@@ -1,6 +1,8 @@
 {% extends 'landingpage/layout-static.html' %}
 
 {% block content %}
+<h2 class="">Add New RACK</h2>
+<br>
 
 {% if messages %}
   <div class="messages">
@@ -11,23 +13,10 @@
     {% endfor %}
   </div>
 {% endif %}
+      <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit" class="btn btn-primary mt-2">Save RACK</button>
+      </form>
 
-  <div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-body">
-            <h2 class="card-title text-center">Add New RACK</h2>
-            <form method="post" class="mx-auto" style="max-width: 300px;">
-              {% csrf_token %}
-              {{ form.as_p }}
-                <div class="card">
-                  <button type="submit" class="btn btn-primary btn-sm btn-block mt-4">Save RACK</button>
-                </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 {% endblock %}

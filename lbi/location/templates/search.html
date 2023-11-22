@@ -1,0 +1,29 @@
+{% extends 'landingpage/layout-static.html' %}
+{% block content %}
+    <h2>Resultados de la Búsqueda</h2>
+   
+    {% if resultados %}
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>LBI</th>
+                    <th>Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for resultado in resultados %}
+                    <tr>
+                        <td>{{ resultado.Number }}</td>
+                        <td>
+                        <a href="{% url 'update_ubication' pk=resultado.pk %}" class="btn btn-primary">Edit</a>
+                        <a href="{% url 'create_ean' %}" class="btn btn-dark">Add Eans</a>
+                        <a href="#" class="btn btn-danger">Delete Ubication</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No se encontraron resultados.</p>
+    {% endif %}
+{% endblock %}

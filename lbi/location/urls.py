@@ -24,7 +24,16 @@ urlpatterns = [
     path('lbi/create/', LBICreateView.as_view(), name='lbi_create'),
     path('ubication/<int:pk>/update_ubication/', LBIUpdateView.as_view(), name='update_ubication'),
     path('select_lbi/', select_lbi, name='select_lbi'),
+    path('eliminar-rack/<str:pk>', EliminarRackView.as_view(), name='eliminar_rack'),
+    #ean
     path('location/', EanListView.as_view(), name='location'),
     path('create_ean/', create_ean, name='create_ean'),
     path('location/<int:pk>/update_location/', LocationUpdateView.as_view(), name='update_location'),
+    path('eliminar-ean/<str:pk>', EliminarEanView.as_view(), name='eliminar_ean'),
+    #Search bar
+    path('search/', search , name='search'),
+    #Descarga CSV
+    path('export-csv/', ExportCSVView.as_view(), name='export_csv'),
+    path('confirmar-actualizacion/', ConfirmarActualizacionView.as_view(), name='confirmar_actualizacion'),
+    path('eliminar-base/', EliminarBaseView.as_view(), name='eliminar_base'),
 ]

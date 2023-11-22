@@ -2,8 +2,17 @@
 {% block content %}
 {% load static %}
 
-<h1>Ubicaciones Ingresadas:</h1>
 
+   
+
+<div class="ml-auto">
+    <h1>Ubicaciones Ingresadas:</h1>
+    <a href="{% url 'export_csv' %}" class="btn btn-light float-right">Descargar CSV</a>
+    <a href="{% url 'confirmar_actualizacion' %}" class="btn btn-success float-right">Confirmar Actualizacion</a>
+    <a href="{% url 'eliminar_base' %}" class="btn btn-danger float-right" onclick="return confirmarEliminar('base')">Eliminar Base</a>
+    <a href="{% url 'select_lbi' %}" class="btn btn-dark float-right">Agregar Eans</a>
+</div>
+<br>
 {% if eans %}
     <table class="table table-bordered">
         <thead>
@@ -29,7 +38,7 @@
                     <td>{{ e.is_loaded }}</td>
                     <td>
                         <a href="{% url 'update_location' pk=e.pk %}" class="btn btn-primary">Edit</a>
-                        <a href="#" class="btn btn-danger">Delete Ubication</a></td>
+                        <a href="{% url 'eliminar_ean' pk=e.pk %}" class="btn btn-danger" onclick="return confirmarEliminar()">Delete Ubication</a></td>
                     <td>
 
                     </td>
@@ -48,5 +57,24 @@
 {% else %}
     <p>No hay ubicaciones disponibles.</p>
 {% endif %}
+<script>
+    function confirmarEliminar(input) {
+        // Muestra una ventana de confirmación
+        if (input === 'base') {
+            var confirmacion = confirm("¿Estás seguro de que deseas eliminar toda la Base?");
+        } else {
+            var confirmacion = confirm("¿Estás seguro de que deseas eliminar este Ean?");
+        }
+        
+        // Si el usuario confirma, redirige a la URL de eliminación
+        if (confirmacion) {
+            return true;  // Continuar con la acción del enlace
+        } else {
+            return false;  // Cancelar la acción del enlace
+        }
+    }
+</script>
+
+
 
 {% endblock %}
