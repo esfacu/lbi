@@ -86,3 +86,9 @@ def create_ean(request):
         form = EanCreationForm()
 
     return render(request, 'eans/create_ean.html', {'form': form, 'selected_lbi': selected_lbi})
+
+class LocationUpdateView(UpdateView):  # Usa solo LoginRequiredMixin
+    model = Ean
+    template_name = 'eans/update_location.html'
+    fields = ['lbi', 'ean_code', 'is_loaded']
+    success_url = reverse_lazy('location')

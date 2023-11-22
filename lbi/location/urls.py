@@ -26,4 +26,5 @@ urlpatterns = [
     path('select_lbi/', select_lbi, name='select_lbi'),
     path('location/', EanListView.as_view(), name='location'),
     path('create_ean/', create_ean, name='create_ean'),
+    path('location/<int:pk>/update_location/', LocationUpdateView.as_view(), name='update_location'),
 ]

@@ -11,6 +11,9 @@
                 <th>ID</th>
                 <th>Ean Label</th>
                 <th>RACK Label</th>
+                <th>Date Label</th>
+                <th>Load Status</th>
+                <th>Options</th>
                 {% comment %}
                 <!-- <th>Acciones</th> -->
                 {% endcomment %}
@@ -22,6 +25,11 @@
                     <td>{{ e.id }}</td>
                     <td>{{ e.ean_code }}</td>
                     <td>{{ e.lbi }}</td>
+                    <td>{{ e.created_at }}</td>
+                    <td>{{ e.is_loaded }}</td>
+                    <td>
+                        <a href="{% url 'update_location' pk=e.pk %}" class="btn btn-primary">Edit</a>
+                        <a href="#" class="btn btn-danger">Delete Ubication</a></td>
                     <td>
 
                     </td>
