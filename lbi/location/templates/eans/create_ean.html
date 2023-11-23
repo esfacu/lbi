@@ -24,4 +24,16 @@
       </a>
     </button>
   </form>
+
+  <script>
+    // Enfoque automático en el campo de entrada al cargar la página
+    document.addEventListener('DOMContentLoaded', function() {
+      var inputField = document.querySelector('#id_ean_code');
+      if (inputField) {
+        inputField.focus();
+      }
+    });
+    
+    
+  </script>
 {% endblock %}
