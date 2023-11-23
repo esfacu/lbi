@@ -1,9 +1,24 @@
 {% extends 'landingpage/layout-static.html' %}
 {% block content %}
 {% load static %}
+<div class="card mb-4">
+    <div class="card-body">
+        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" method="get" action="{% url 'searchEan' %}">
+            <div class="input-group">
+                <input class="form-control" type="text" name="q" placeholder="Search Ean..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                <button class="btn btn-primary" id="btnNavbarSearch" type="submit"><i class="fas fa-search"></i></button>
+            </div>
+        </form>
+        <form class="d-inline-block d-md-none form-inline ms-auto me-0 me-md-3 my-2 my-md-0" method="get" action="{% url 'searchEan' %}">
+            <div class="input-group">
+                <input class="form-control" type="text" name="q" placeholder="Search Ean..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                <button class="btn btn-primary" id="btnNavbarSearch" type="submit"><i class="fas fa-search"></i></button>
+            </div>
+        </form>
+    </div>
+</div>
 
-
-   
+<br>
 
 <div class="ml-auto">
     <h1>Ubicaciones Ingresadas:</h1>
@@ -13,6 +28,7 @@
     <a href="{% url 'select_lbi' %}" class="btn btn-dark float-right">Agregar Eans</a>
 </div>
 <br>
+
 {% if eans %}
     <table class="table table-bordered">
         <thead>
@@ -23,9 +39,6 @@
                 <th>Date Label</th>
                 <th>Load Status</th>
                 <th>Options</th>
-                {% comment %}
-                <!-- <th>Acciones</th> -->
-                {% endcomment %}
             </tr>
         </thead>
         <tbody>
@@ -38,18 +51,8 @@
                     <td>{{ e.is_loaded }}</td>
                     <td>
                         <a href="{% url 'update_location' pk=e.pk %}" class="btn btn-primary">Edit</a>
-                        <a href="{% url 'eliminar_ean' pk=e.pk %}" class="btn btn-danger" onclick="return confirmarEliminar()">Delete Ubication</a></td>
-                    <td>
-
+                        <a href="{% url 'eliminar_ean' pk=e.pk %}" class="btn btn-danger" onclick="return confirmarEliminar('ean')">Delete Ubication</a>
                     </td>
-                    {% comment %}
-                    <!-- <td>
-                        <form class="card">
-                            <a href="{% url 'ubication_confirm_delete' pk=l.pk %}" class="btn btn-danger">Delete Ubication</a>
-                            <a href="{% url 'update_ubication' pk=l.pk %}" class="btn btn-primary">Edit</a>
-                        </form>
-                    </td> -->
-                    {% endcomment %}
                 </tr>
             {% endfor %}
         </tbody>
@@ -57,24 +60,17 @@
 {% else %}
     <p>No hay ubicaciones disponibles.</p>
 {% endif %}
+
 <script>
-    function confirmarEliminar(input) {
+    function confirmarEliminar(tipo) {
         // Muestra una ventana de confirmación
-        if (input === 'base') {
-            var confirmacion = confirm("¿Estás seguro de que deseas eliminar toda la Base?");
-        } else {
-            var confirmacion = confirm("¿Estás seguro de que deseas eliminar este Ean?");
-        }
-        
+        var confirmacion = tipo === 'base'
+            ? confirm("¿Estás seguro de que deseas eliminar toda la Base?")
+            : confirm("¿Estás seguro de que deseas eliminar este Ean?");
+
         // Si el usuario confirma, redirige a la URL de eliminación
-        if (confirmacion) {
-            return true;  // Continuar con la acción del enlace
-        } else {
-            return false;  // Cancelar la acción del enlace
-        }
+        return confirmacion;
     }
 </script>
-
-
 
 {% endblock %}

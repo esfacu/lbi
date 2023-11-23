@@ -32,6 +32,7 @@ urlpatterns = [
     path('eliminar-ean/<str:pk>', EliminarEanView.as_view(), name='eliminar_ean'),
     #Search bar
     path('search/', search , name='search'),
+    path('searchEan', searchEan, name='searchEan'),
     #Descarga CSV
     path('export-csv/', ExportCSVView.as_view(), name='export_csv'),
     path('confirmar-actualizacion/', ConfirmarActualizacionView.as_view(), name='confirmar_actualizacion'),

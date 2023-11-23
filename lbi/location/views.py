@@ -159,3 +159,14 @@ class EliminarEanView(View):
 
         # Redirige a la página 'ubication' después de la eliminación
         return redirect('location')
+    
+    
+def searchEan(request):
+    query = request.GET.get('q')
+    if query:
+        eans = Ean.objects.filter(ean_code__icontains=query)
+        if not eans:
+            messages.info(request, 'No se encontró ningún Ean.')
+    else:
+        eans = Ean.objects.all()
+    return render(request, 'eans/locations.html', {'eans': eans, 'query': query})
