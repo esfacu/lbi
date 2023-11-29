@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.views.generic import ListView, DeleteView, UpdateView, TemplateView, CreateView
 from django.urls import reverse_lazy
@@ -66,8 +67,15 @@ def select_lbi(request):
     if request.method == 'POST':
         form = LBISelectionForm(request.POST)
         if form.is_valid():
-            selected_lbi_id = form.cleaned_data['selected_lbi']
-            request.session['selected_lbi_id'] = selected_lbi_id
+            selected_lbi = form.cleaned_data['selected_lbi']
+
+            try:
+                selected_lbi_instance = LBI.objects.get(Number=selected_lbi)
+            except LBI.DoesNotExist:
+                messages.error(request, 'El LBI seleccionado no existe. Por favor, elige uno válido o Agregalo en Add Rack.')
+                return render(request, 'eans/select_lbi.html', {'form': form})
+
+            request.session['selected_lbi'] = selected_lbi
             return redirect('create_ean')
     else:
         form = LBISelectionForm()
@@ -75,21 +83,25 @@ def select_lbi(request):
     return render(request, 'eans/select_lbi.html', {'form': form})
 
 
-def create_ean(request):
-    selected_lbi_id = request.session.get('selected_lbi_id')
-    selected_lbi = LBI.objects.get(pk=selected_lbi_id)
 
+def create_ean(request):
+    selected_lbi_id = request.session.get('selected_lbi') 
+    selected_lbi_instance = LBI.objects.get(Number=selected_lbi_id)
+    
     if request.method == 'POST':
         form = EanCreationForm(request.POST)
         if form.is_valid():
             ean_code = form.cleaned_data['ean_code']
-            Ean.objects.create(lbi=selected_lbi, ean_code=ean_code)
+            # Aquí asignamos la instancia de LBI al campo lbi
+            ean = Ean(lbi=selected_lbi_instance, ean_code=ean_code)
+            ean.save()
             messages.success(request, 'EAN agregado exitosamente.')
             return redirect('create_ean')
     else:
         form = EanCreationForm()
 
-    return render(request, 'eans/create_ean.html', {'form': form, 'selected_lbi': selected_lbi})
+    return render(request, 'eans/create_ean.html', {'form': form, 'selected_lbi': selected_lbi_instance})
+
 
 class LocationUpdateView(UpdateView):  # Usa solo LoginRequiredMixin
     model = Ean

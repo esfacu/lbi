@@ -11,12 +11,13 @@
 <br>
 
 {% if ubication %}
+<div class="table-responsive">
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>RACK Label</th>
-                <th>Options Label</th>
+                <th class="col-xs-2">ID</th>
+                <th class="col-xs-4">RACK Label</th>
+                <th class="col-xs-6">Options Label</th>
                 {% comment %}
                 <!-- <th>Acciones</th> -->
                 {% endcomment %}
@@ -25,9 +26,9 @@
         <tbody>
             {% for l in ubication %}
                 <tr>
-                    <td>{{ l.id }}</td>
-                    <td>{{ l.Number }}</td>
-                    <td>
+                    <td class="col-xs-2 col-sm-">{{ l.id }}</td>
+                    <td class="col-xs-4 col-sm-">{{ l.Number }}</td>
+                    <td class="col-xs-6 col-sm-">
                     <a href="{% url 'update_ubication' pk=l.pk %}" class="btn btn-primary">Edit Rack</a>
                     <a href="{% url 'create_ean' %}" class="btn btn-dark">Add Eans</a>
                     <a href="{% url 'eliminar_rack' pk=l.Number %}" class="btn btn-danger" onclick="return confirmarEliminar()">Delete Ubication</a>
@@ -44,6 +45,7 @@
             {% endfor %}
         </tbody>
     </table>
+</div>
 {% else %}
     <p>No hay ubicaciones disponibles.</p>
 {% endif %}

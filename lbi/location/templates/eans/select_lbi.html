@@ -2,12 +2,22 @@
 {% extends 'landingpage/layout-static.html' %}
 
 {% block content %}
-  <h1>Seleccione LBI</h1>
-
-
+  <h1>Seleccione el Rack</h1>
+  {% if messages %}
+  <div class="messages">
+    {% for message in messages %}
+      <div class="alert alert-success" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit" class="btn btn-primary  mt-1">Siguiente</button>
+    <a class="btn btn-secondary  mt-1" href="{% url 'lbi_create' %}">Add Rack</a>
   </form>
+
 {% endblock %}
