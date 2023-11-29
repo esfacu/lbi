@@ -37,4 +37,10 @@ urlpatterns = [
     path('export-csv/', ExportCSVView.as_view(), name='export_csv'),
     path('confirmar-actualizacion/', ConfirmarActualizacionView.as_view(), name='confirmar_actualizacion'),
     path('eliminar-base/', EliminarBaseView.as_view(), name='eliminar_base'),
+    #Login
+    path('login/', custom_login, name='custom_login'),
+    #logout
+    path('login/', LogoutView.as_view(), name='logout'),
+    #register
+    path('register/', register, name='register'),
 ]

@@ -1,10 +1,12 @@
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.views import LogoutView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.views.generic import ListView, DeleteView, UpdateView, TemplateView, CreateView
 from django.urls import reverse_lazy
 from .models import LBI, Ean
-from .forms import LBIForm , LBISelectionForm, EanCreationForm
+from .forms import *
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views import View
 from django.http import HttpResponse
@@ -41,21 +43,7 @@ class EanListView(ListView):
     template_name = 'eans/locations.html'
     context_object_name = 'eans'
  
-''' 
-class LBIUpdateView(PermissionRequiredMixin,UpdateView):
-    model = LBI
-    template_name = 'ubication/update_ubication.html'
-    fields = ['Number']
-    success_url = reverse_lazy('ubication')
-    permission_required = 'location.update_lbi'
-    permission_denied_message = 'No estas autorizado'
-    
-    def handle_no_permission(self):
-        messages.error(self.request, self.permission_denied_message)
-        return render(self.request, 'errores/403.html', status=403)
-    
-    from django.contrib.auth.mixins import LoginRequiredMixin  # Importa solo LoginRequiredMixin
-'''
+ 
 class LBIUpdateView(UpdateView):  # Usa solo LoginRequiredMixin
     model = LBI
     template_name = 'ubication/update_ubication.html'
@@ -182,3 +170,36 @@ def searchEan(request):
     else:
         eans = Ean.objects.all()
     return render(request, 'eans/locations.html', {'eans': eans, 'query': query})
+
+def custom_login(request):
+    if request.method == 'POST':
+        form = CustomAuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+
+            if user is not None:
+                login(request, user)
+                return redirect('index')
+            else:
+                messages.error(request, 'Cédula incorrecta o usuario no encontrado.')
+        else:
+            messages.error(request, 'Formulario inválido. Verifica los datos ingresados.')
+            print(form.errors)
+    else:
+        form = CustomAuthenticationForm()
+
+    return render(request, 'login/login.html', {'form': form})
+
+def register(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('index')  # Redirige a donde quieras después del registro
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'login/register.html', {'form': form})  # Reemplaza 'nombre_de_tu_template.html' con la ruta correcta a tu template
+
