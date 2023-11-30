@@ -1,8 +1,11 @@
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.views import LogoutView
 from django.shortcuts import render, redirect, get_object_or_404
+#Decoradores 
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
+#Vistas
 from django.views.generic import ListView, DeleteView, UpdateView, TemplateView, CreateView
 from django.urls import reverse_lazy
 from .models import LBI, Ean
@@ -15,9 +18,14 @@ from django.db.models import F
 
 # Create your views here.
 
+class Error403View(TemplateView):
+    template_name = 'errores/403.html'
+
+@method_decorator(login_required, name='dispatch')
 class IndexView(TemplateView):
     template_name = 'index.html'
-    
+  
+@method_decorator(login_required, name='dispatch')
 class LBICreateView(CreateView):
     model = LBI
     form_class = LBIForm
@@ -31,26 +39,26 @@ class LBICreateView(CreateView):
     def get_success_url(self):
         return reverse_lazy('lbi_create')
     
-    
+@method_decorator(login_required, name='dispatch')
 class LBIListView(ListView):
     model = LBI
     template_name = 'ubication/ubication.html'
     context_object_name = 'ubication'
     
-
+@method_decorator(login_required, name='dispatch')
 class EanListView(ListView):
     model = Ean
     template_name = 'eans/locations.html'
     context_object_name = 'eans'
  
- 
+@method_decorator(login_required, name='dispatch')
 class LBIUpdateView(UpdateView):  # Usa solo LoginRequiredMixin
     model = LBI
     template_name = 'ubication/update_ubication.html'
     fields = ['Number']
     success_url = reverse_lazy('ubication')
     
-
+@login_required
 def select_lbi(request):
     if request.method == 'POST':
         form = LBISelectionForm(request.POST)
@@ -71,7 +79,7 @@ def select_lbi(request):
     return render(request, 'eans/select_lbi.html', {'form': form})
 
 
-
+@login_required
 def create_ean(request):
     selected_lbi_id = request.session.get('selected_lbi') 
     selected_lbi_instance = LBI.objects.get(Number=selected_lbi_id)
@@ -90,7 +98,7 @@ def create_ean(request):
 
     return render(request, 'eans/create_ean.html', {'form': form, 'selected_lbi': selected_lbi_instance})
 
-
+@method_decorator(login_required, name='dispatch')
 class LocationUpdateView(UpdateView):  # Usa solo LoginRequiredMixin
     model = Ean
     template_name = 'eans/update_location.html'
@@ -198,8 +206,13 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('index')  # Redirige a donde quieras después del registro
+            messages.success(request, 'Registro exitoso!')# Redirige a donde quieras después del registro
+            return redirect('index')
+        else:
+            # Pasa los errores al contexto
+            messages.error(request, 'La contraseña debe contener al menos 8 caracteres')
+            messages.error(request, 'La contraseña  no puede ser totalmente numérica, debe tener al menos 2 letras')
+            return render(request, 'login/register.html', {'form': form})
     else:
         form = CustomUserCreationForm()
     return render(request, 'login/register.html', {'form': form})  # Reemplaza 'nombre_de_tu_template.html' con la ruta correcta a tu template
-

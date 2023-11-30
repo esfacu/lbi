@@ -132,3 +132,5 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 AUTH_USER_MODEL = 'location.CustomUser'
+
+LOGOUT_REDIRECT_URL = 'custom_login'

@@ -14,13 +14,18 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+#Para logout
+from django.contrib.auth.views import LogoutView
+# admin
 from django.contrib import admin
+#
 from django.urls import path, include
 from .views import *
 
+
 urlpatterns = [
     path('ubication/', LBIListView.as_view(), name='ubication'),
-    path('', IndexView.as_view(), name='index'),
+    path('index/', IndexView.as_view(), name='index'),
     path('lbi/create/', LBICreateView.as_view(), name='lbi_create'),
     path('ubication/<int:pk>/update_ubication/', LBIUpdateView.as_view(), name='update_ubication'),
     path('select_lbi/', select_lbi, name='select_lbi'),
@@ -38,9 +43,11 @@ urlpatterns = [
     path('confirmar-actualizacion/', ConfirmarActualizacionView.as_view(), name='confirmar_actualizacion'),
     path('eliminar-base/', EliminarBaseView.as_view(), name='eliminar_base'),
     #Login
-    path('login/', custom_login, name='custom_login'),
+    path('', custom_login, name='custom_login'),
     #logout
-    path('login/', LogoutView.as_view(), name='logout'),
+    path('logout/', LogoutView.as_view(template_name='login/logout.html'), name='logout'),
     #register
     path('register/', register, name='register'),
+    #errores para chismosos
+    path('403/', Error403View.as_view(), name='403'),
 ]

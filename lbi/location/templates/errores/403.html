@@ -10,9 +10,9 @@
                         <div class="text-center mt-4">
                             <img class="mb-4 img-error" src="{% static 'templateboostrap/assets/img/error-404-monochrome.svg' %}" />
                             <p class="lead">NO TIENES PERMISOS PARA VER ESTA PAGINA.</p>
-                            <a href="index.html">
+                            <a href="{% url 'index' %}">
                                 <i class="fas fa-arrow-left me-1"></i>
-                                Return to Dashboard
+                                Return to Index
                             </a>
                         </div>
                     </div>
