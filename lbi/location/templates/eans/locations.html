@@ -17,6 +17,23 @@
         </form>
     </div>
 </div>
+<div>
+    <table class="table table">
+        <thead>
+            <tr>
+                <th>FILTROS:</th>
+            </tr>
+        </thead>
+        <tbody>
+            <td>
+                <a href="{% url 'searchEan' %}?is_loaded=true" class="btn btn-secondary">LBI Cargados</a>
+                <a href="{% url 'searchEan' %}?is_loaded=false" class="btn btn-secondary">LBI No Cargados</a>
+            </td>
+        </tbody>   
+    </table> 
+</div>
+
+
 
 <br>
 
@@ -62,6 +79,8 @@
             {% endfor %}
         </tbody>
     </table>
+
+
 {% else %}
     <p>No hay ubicaciones disponibles.</p>
 {% endif %}

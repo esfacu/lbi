@@ -119,7 +119,7 @@ def search(request):
 class ExportCSVView(View):
     def get(self, request, *args, **kwargs):
         # Obtener los datos que quieres incluir en el CSV
-        ean_data = Ean.objects.values('ean_code', 'lbi__Number', 'colaborador__Tienda')
+        ean_data = Ean.objects.values('ean_code', 'lbi__Number', 'colaborador__Tienda','is_loaded')
 
         # Crear la respuesta del archivo CSV
         response = HttpResponse(content_type='text/csv')
@@ -127,11 +127,11 @@ class ExportCSVView(View):
 
         # Crear el escritor CSV y escribir los encabezados
         writer = csv.writer(response)
-        writer.writerow(['EAN Code', 'LBI Number', 'Tienda'])
+        writer.writerow(['EAN Code', 'LBI Number', 'Tienda', 'is_loaded?'])
 
         # Escribir los datos en el archivo CSV
         for row in ean_data:
-            writer.writerow([row['ean_code'], row['lbi__Number'], row['colaborador__Tienda']])
+            writer.writerow([row['ean_code'], row['lbi__Number'], row['colaborador__Tienda'], row['is_loaded']])
 
         return response
 
@@ -174,14 +174,28 @@ class EliminarEanView(View):
     
     
 def searchEan(request):
+    # Obtener el valor de búsqueda del formulario
     query = request.GET.get('q')
+    # Obtener el valor de is_loaded del formulario
+    is_loaded_filter = request.GET.get('is_loaded')
+
+    # Inicializar queryset con todos los EANs
+    eans = Ean.objects.all()
+
+    # Si hay un término de búsqueda, filtrar por ese término
     if query:
-        eans = Ean.objects.filter(ean_code__icontains=query)
+        eans = eans.filter(ean_code__icontains=query)
         if not eans:
-            messages.info(request, 'No se encontró ningún Ean.')
-    else:
-        eans = Ean.objects.all()
+            messages.info(request, 'No se encontró ningún EAN.')
+
+    # Si hay un filtro is_loaded, aplicar el filtro
+    if is_loaded_filter is not None:
+        is_loaded_value = True if is_loaded_filter.lower() == 'true' else False
+        eans = eans.filter(is_loaded=is_loaded_value)
+
+    # Renderizar la plantilla con los resultados
     return render(request, 'eans/locations.html', {'eans': eans, 'query': query})
+
 
 def custom_login(request):
     if request.method == 'POST':
