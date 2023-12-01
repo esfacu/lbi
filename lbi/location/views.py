@@ -88,8 +88,11 @@ def create_ean(request):
         form = EanCreationForm(request.POST)
         if form.is_valid():
             ean_code = form.cleaned_data['ean_code']
+            # Obtener el usuario actual
+            colaborador_actual = request.user
             # Aquí asignamos la instancia de LBI al campo lbi
-            ean = Ean(lbi=selected_lbi_instance, ean_code=ean_code)
+            ean = Ean(lbi=selected_lbi_instance, ean_code=ean_code, colaborador=colaborador_actual)
+            
             ean.save()
             messages.success(request, 'EAN agregado exitosamente.')
             return redirect('create_ean')
@@ -116,7 +119,7 @@ def search(request):
 class ExportCSVView(View):
     def get(self, request, *args, **kwargs):
         # Obtener los datos que quieres incluir en el CSV
-        ean_data = Ean.objects.values('ean_code', 'lbi__Number')
+        ean_data = Ean.objects.values('ean_code', 'lbi__Number', 'colaborador__Tienda')
 
         # Crear la respuesta del archivo CSV
         response = HttpResponse(content_type='text/csv')
@@ -124,13 +127,14 @@ class ExportCSVView(View):
 
         # Crear el escritor CSV y escribir los encabezados
         writer = csv.writer(response)
-        writer.writerow(['EAN Code', 'LBI Number'])
+        writer.writerow(['EAN Code', 'LBI Number', 'Tienda'])
 
         # Escribir los datos en el archivo CSV
         for row in ean_data:
-            writer.writerow([row['ean_code'], row['lbi__Number']])
+            writer.writerow([row['ean_code'], row['lbi__Number'], row['colaborador__Tienda']])
 
         return response
+
     
 class ConfirmarActualizacionView(View):
     def get(self, request, *args, **kwargs):

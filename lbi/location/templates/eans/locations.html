@@ -22,6 +22,7 @@
 
 <div class="ml-auto">
     <h1>Ubicaciones Ingresadas:</h1>
+
     <a href="{% url 'export_csv' %}" class="btn btn-light float-right">Descargar CSV</a>
     <a href="{% url 'confirmar_actualizacion' %}" class="btn btn-success float-right">Confirmar Actualizacion</a>
     <a href="{% url 'eliminar_base' %}" class="btn btn-danger float-right" onclick="return confirmarEliminar('base')">Eliminar Base</a>
@@ -38,6 +39,8 @@
                 <th>RACK Label</th>
                 <th>Date Label</th>
                 <th>Load Status</th>
+                <th>Colaborador</th>
+                <th>Tienda</th>
                 <th>Options</th>
             </tr>
         </thead>
@@ -49,6 +52,8 @@
                     <td>{{ e.lbi }}</td>
                     <td>{{ e.created_at }}</td>
                     <td>{{ e.is_loaded }}</td>
+                    <td>{{ e.colaborador.Nombre }}</td>
+                    <td>{{ e.colaborador.Tienda }}</td>
                     <td>
                         <a href="{% url 'update_location' pk=e.pk %}" class="btn btn-primary">Edit</a>
                         <a href="{% url 'eliminar_ean' pk=e.pk %}" class="btn btn-danger" onclick="return confirmarEliminar('ean')">Delete Ubication</a>
@@ -63,12 +68,9 @@
 
 <script>
     function confirmarEliminar(tipo) {
-        // Muestra una ventana de confirmación
         var confirmacion = tipo === 'base'
             ? confirm("¿Estás seguro de que deseas eliminar toda la Base?")
             : confirm("¿Estás seguro de que deseas eliminar este Ean?");
-
-        // Si el usuario confirma, redirige a la URL de eliminación
         return confirmacion;
     }
 </script>
