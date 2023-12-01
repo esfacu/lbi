@@ -18,17 +18,23 @@
     </div>
 </div>
 <div>
-    <table class="table table">
+    <table class="table">
         <thead>
             <tr>
                 <th>FILTROS:</th>
             </tr>
         </thead>
         <tbody>
-            <td>
-                <a href="{% url 'searchEan' %}?is_loaded=true" class="btn btn-secondary">LBI Cargados</a>
-                <a href="{% url 'searchEan' %}?is_loaded=false" class="btn btn-secondary">LBI No Cargados</a>
-            </td>
+            <tr>
+                <td>
+                    <a href="{% url 'searchEan' %}?is_loaded=true" class="btn btn-light">LBI Cargados</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="{% url 'searchEan' %}?is_loaded=false" class="btn btn-light">LBI No Cargados</a>
+                </td>
+            </tr>
         </tbody>   
     </table> 
 </div>
@@ -40,7 +46,7 @@
 <div class="ml-auto">
     <h1>Ubicaciones Ingresadas:</h1>
 
-    <a href="{% url 'export_csv' %}" class="btn btn-light float-right">Descargar CSV</a>
+    <a href="{% url 'export_csv' %}" class="btn btn-secondary float-right">Descargar CSV</a>
     <a href="{% url 'confirmar_actualizacion' %}" class="btn btn-success float-right">Confirmar Actualizacion</a>
     <a href="{% url 'eliminar_base' %}" class="btn btn-danger float-right" onclick="return confirmarEliminar('base')">Eliminar Base</a>
     <a href="{% url 'select_lbi' %}" class="btn btn-dark float-right">Agregar Eans</a>
